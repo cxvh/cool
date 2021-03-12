@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>雪花</title>
+    <style>
+      * {
+        padding: 0;
+        margin: 0;
+      }
+      body {
+        background-color: #1c1e1f;
+      }
+
+      canvas {
+        position: absolute;
+        display: block;
+        height: 100%;
+      }
+    </style>
+  </head>
+  <body>
+    <script>
+      var π2 = Math.PI * 2;
+      function random(min, max) {
+        return Math.random() * (max - min + 1) + min;
+      }
+
+      var canvas = document.createElement("canvas");
+      document.body.appendChild(canvas);
+
+      var ctx = canvas.getContext("2d");
+      var width = (ctx.canvas.width = window.innerWidth);
+      var height = (ctx.canvas.height = window.innerHeight);
+      var target = ((width * height) / 10000) | 0;
+      var snowflakes = [];
+
+      window.addEventListener("resize", function () {
+        width = canvas.width = window.innerWidth;
+        height = canvas.height = window.innerHeight;
+        target = ((width * height) / 10000) | 0;
+      });
+
+      function Snow(x, y) {
+        this.construct(x, y);
+      }
+      Snow.prototype = {
+        construct: function (x, y) {
+          this.x = x || random(0, width);
+          this.y = y || random(0, -200);
+          this.radius = random(1.0, 3.0);
+          this.speed = random(0.5, 1.0);
+          this.wind = random(-0.5, 0.5);
+        },
+        update: function () {
+          this.y += this.speed;
+          this.x += this.wind;
+
+          if (this.y > height) this.construct();
+
+          ctx.beginPath();
+          ctx.arc(this.x, this.y, this.radius, 0, π2);
+          ctx.fill();
+        }
+      };
+
+      function update() {
+        requestAnimationFrame(update);
+
+        ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+        ctx.fillStyle = "#fff";
+        for (var i = 0, snowflake; (snowflake = snowflakes[i]); i++)
+          snowflake.update();
+
+        if (snowflakes.length < target) snowflakes.push(new Snow());
+        else if (snowflakes.length > target)
+          snowflakes = snowflakes.slice(0, target);
+      }
+
+      for (var i = 0; i < target; i++)
+        snowflakes.push(new Snow(undefined, random(0, height)));
+      update();
+    </script>
+  </body>
+</html>

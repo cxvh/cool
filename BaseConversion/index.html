@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>2-36 进制转换</title>
+    <style>
+      @import url(https://fonts.googleapis.com/css?family=Inconsolata);
+
+      ::-webkit-input-placeholder {
+        color: #bdc3c7;
+      }
+      ::-moz-placeholder {
+        color: #bdc3c7;
+      }
+      :-ms-input-placeholder {
+        color: #bdc3c7;
+      }
+      ::-ms-clear {
+        display: none;
+      }
+
+      ::-webkit-inner-spin-button,
+      ::-webkit-outer-spin-button {
+        background: red;
+        margin-top: -4px;
+        margin-left: 7px;
+        height: 27px;
+        z-index: 1;
+        cursor: pointer;
+      }
+      html {
+        background-color: #ecf0f1;
+        color: #34495e;
+        height: 95%;
+        font-family: Tahoma, sans-serif;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+      }
+      body,
+      .wrapper {
+        width: 100%;
+      }
+      h1 {
+        margin: 2px;
+      }
+      #converter {
+        margin: 30px auto;
+      }
+      .block {
+        margin: 3px 0;
+        display: inline-block;
+      }
+      .adjustSize {
+        width: 100%;
+        max-width: 380px;
+      }
+      input {
+        padding: 0.8em 1.6em;
+        background-color: #651fff;
+        border: none;
+        outline: none;
+        color: #fff;
+        font: 1em "Inconsolata", sans-serif;
+        text-align: right;
+      }
+      input[type="number"] {
+        width: 10%;
+        border-left: 1px dashed #ecf0f1;
+        border-top-right-radius: 2px;
+        border-bottom-right-radius: 2px;
+      }
+      input[type="text"] {
+        width: 60%;
+        border-top-left-radius: 2px;
+        border-bottom-left-radius: 2px;
+      }
+      input[readonly] {
+        background-color: #a3b1b2;
+      }
+      @media (max-width: 800px) {
+        .block {
+          display: block;
+          margin: 0 auto;
+        }
+        input[type="text"] {
+          width: auto;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="wrapper">
+      <h1>2-36 进制转换</h1>
+
+      <div id="converter">
+        <div class="block adjustSize">
+          <input
+            id="input"
+            type="text"
+            placeholder="数字或像数字一样的东西"
+            spellcheck="false"
+            autofocus
+          /><input id="inputRadix" type="number" value="10" min="2" max="36" />
+        </div>
+        <div class="block">=</div>
+        <div class="block adjustSize">
+          <input id="result" type="text" readonly /><input
+            id="resultRadix"
+            type="number"
+            value="16"
+            min="2"
+            max="36"
+          />
+        </div>
+      </div>
+    </div>
+    <script>
+      "use strict";
+
+      var input = document.getElementById("input"),
+        inputRadix = document.getElementById("inputRadix"),
+        result = document.getElementById("result"),
+        resultRadix = document.getElementById("resultRadix"),
+        rigix = "0123456789abcdefghijklmnopqrstuvwxyz",
+        operations = "+-*/%";
+
+      input.addEventListener("input", evaluate);
+      inputRadix.addEventListener("input", evaluate);
+      resultRadix.addEventListener("input", evaluate);
+
+      function evaluate() {
+        if (
+          inputRadix.value < 2 ||
+          inputRadix.value > 36 ||
+          resultRadix.value < 2 ||
+          resultRadix.value > 36
+        ) {
+          result.value = "Base has to be between 2 and 36";
+          return;
+        }
+
+        input.value = input.value.trim();
+
+        if (input.value == "") result.value = "";
+        else {
+          var value = input.value.replace(/ /g, ""),
+            decimalValue = "",
+            tmpValue = "";
+
+          for (var i = 0, index; i < value.length; i++) {
+            index = rigix.indexOf(value[i].toLowerCase());
+            if (index == -1 || index >= inputRadix.value) {
+              if (operations.indexOf(value[i]) >= 0) {
+                if (tmpValue) {
+                  decimalValue += parseInt(tmpValue, inputRadix.value);
+                  tmpValue = "";
+                }
+                decimalValue += value[i];
+                continue;
+              }
+
+              result.value = "Unexpected token " + value[i];
+              return;
+            }
+
+            tmpValue += value[i];
+          }
+          decimalValue += parseInt(tmpValue, inputRadix.value);
+
+          try {
+            decimalValue = eval(decimalValue);
+            value = decimalValue.toString(resultRadix.value);
+            if (value == "NaN") result.value = "What?";
+            else result.value = value;
+          } catch (e) {
+            result.value = e.message;
+          }
+        }
+      }
+    </script>
+  </body>
+</html>

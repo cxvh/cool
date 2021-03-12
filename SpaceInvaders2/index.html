@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>太空侵略者2</title>
+    <style>
+      body {
+        background: #000;
+        font-family: Courier;
+        color: #fff;
+        text-align: center;
+      }
+      div {
+        position: relative;
+        display: inline;
+        overflow: hidden;
+      }
+      pre {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        color: #555;
+        user-select: none;
+      }
+      #help {
+        bottom: -2.5em;
+      }
+    </style>
+  </head>
+  <body>
+    <p>
+      歪行人即将入侵我们的小镇!
+      <button id="restart">再来一次!</button>
+    </p>
+    <div>
+      <canvas id="space-invaders">对不起，您需要一款新颖的浏览器</canvas>
+      <pre>
+                                                     |                                                                                                                 
+                                                    { }              |                                             |                                                   
+                                      |             |.| ____      __{ }                                           {-}                                                  
+                       |B            { }            | |_|..|      |   |                                           |/|                    _                         |B  
+       $       |  _____|_        ____| |_        |  |.| |..|  ¬¬¬¬|¬¬ |   $                       |B   |B   |B    |/| ___               /~\           $$ $ $       |   
+    $ $$$     {_}_| . . |   /\| /  .  . \    ___{_}_| |_|..|  | . . | |   $   ~~~~~~~~~  $    _  { }__{ }__{ }    |/| |..|_____   /\ ___| |___  $   $$$$$$$$$     / \  
+   $$$ |      |   | . . |  /..\ |  .  . |   _| |  |_|.| |..|  | . . | |  $$$  | [] [] | $$$  / \ |  o  o  o  |    |/| |..|....| __|| | . . . | $$$    |  |$|     / @ \ 
+    |  |      |   | . = |  | =| |  . || |  | | |   || | |  |  | . = | |   |   | . . . |  |   | | |  o  o  o  |    |/| |..|....| |  | | A A A |  |   ##########         </pre
+      >
+      <pre id="help">
+使用方向键 左（←）右（→） 移动，使用 空格键（space） 射击</pre
+      >
+    </div>
+    <script src="./main.js"></script>
+  </body>
+</html>
